@@ -1,8 +1,15 @@
-
+#' @importFrom stats dnorm uniroot
 .DeriveCutoffsHelper <- function(x, quantile, flexrep, seed){
   cutoffs <- rep(NA, dim(x)[2])
 
-  cl <- parallel::makeCluster(8)
+
+  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+  if (nzchar(chk) && chk == "TRUE") {
+    num_workers <- 2L
+  } else {
+    num_workers <- 8
+  }
+  cl <- parallel::makeCluster(num_workers)
   doParallel::registerDoParallel(cl)
   `%dopar%` <- foreach::`%dopar%`
   cutoffs <- foreach::foreach(i = 1:ncol(x), .combine = 'c') %dopar% {

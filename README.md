@@ -1,33 +1,35 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-CytoSpill
-=========
+
+# CytoSpill
 
 <!-- badges: start -->
 <!-- badges: end -->
-The goal of CytoSpill is to compensate the spillover effects in CyTOF data which caused by technical effects without relying on control experiment.
 
-Installation
-------------
+The goal of CytoSpill is to compensate the spillover effects in CyTOF
+data which caused by technical effects without relying on control
+experiment.
 
-You can install the development version of CytoSpill from [GitHub](https://github.com/) with:
+## Installation
+
+You can install the development version of CytoSpill from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
+# for the original version
 devtools::install_github("KChen-lab/CytoSpill")
+# or for this forked version
+devtools::install_github("SansMorel/CytoSpill")
 ```
 
-Example
--------
+## Example
 
-This is a example which shows you how to compensate a CyTOF dataset, we used a sample dataset that included in our package here:
+This is a example which shows you how to compensate a CyTOF dataset, we
+used a sample dataset that included in our package here:
 
 ``` r
-devtools::load_all()
-#> Loading CytoSpill
 library(CytoSpill)
-getwd()
-#> [1] "/Users/qmiao/CytoSpill copy 2"
 load(file="./data/Levine32_example.Rdata")
 str(data_Levine32)
 #>  num [1:10000, 1:37] 459501 88341 129149 59689 267864 ...
@@ -36,7 +38,8 @@ str(data_Levine32)
 #>   ..$ : chr [1:37] "Time" "Cell_length" "Ir191Di" "Ir193Di" ...
 ```
 
-We sampled 10,000 cells from the healthy human bone marrow data used in Levine, 2015. We can check the colunmns of this CyTOF dataset:
+We sampled 10,000 cells from the healthy human bone marrow data used in
+Levine, 2015. We can check the colunmns of this CyTOF dataset:
 
 ``` r
 colnames(data_Levine32)
@@ -64,10 +67,15 @@ markers
 #> [36] "CD41"        "Viability"
 ```
 
-After checking the markers we decided to use columns 5 to 36 for compensation. We can use the function SpillComp to estimate the spillover matrix and perform compensation. We need to specify the data we are using, which column are used to calculate the spillover effects and using how many cells for calculation.
+After checking the markers we decided to use columns 5 to 36 for
+compensation. We can use the function SpillComp to estimate the
+spillover matrix and perform compensation.
 
 ``` r
 results <- SpillComp(data = data_Levine32, cols = 5:36, n = 10000, threshold = 0.1, flexrep = 5, neighbor = 1)
 ```
 
-The function returns a list of results, the first element is the compensated data matrix in flowFrame format, the second one is the estimated spillover matrix and the third one is the derived cutoffs based on our method.
+The function returns a list of results, the first element is the
+compensated data matrix in flowFrame format, the second one is the
+estimated spillover matrix and the third one is the derived cutoffs
+based on our method.

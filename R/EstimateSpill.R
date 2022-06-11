@@ -1,3 +1,4 @@
+#' @importFrom stats runif
 .EstimateSpill <- function(data, cutoffs, upperbound, neighbor) {
   results <- list()
   spill_cols <- .SpillColsData(colnames(data), l= CATALYST::isotope_list, nneighbor=neighbor)

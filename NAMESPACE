@@ -2,3 +2,6 @@
 
 export(GetSpillMat)
 export(SpillComp)
+importFrom(stats,dnorm)
+importFrom(stats,runif)
+importFrom(stats,uniroot)
