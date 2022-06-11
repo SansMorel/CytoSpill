@@ -1,7 +1,7 @@
 .EstimateSpill <- function(data, cutoffs, upperbound, neighbor) {
   results <- list()
   spill_cols <- .SpillColsData(colnames(data), l= CATALYST::isotope_list, nneighbor=neighbor)
-  xcols <- .GetFmla(data, spill_cols = spill_cols)
+  xcols <- .GetFmla(ncol(data), spill_cols = spill_cols)
 
   # #old method#
   # for (i in 1:ncol(data)) {
@@ -172,10 +172,10 @@
 #   return(list(results, xcols))
 # }
 
-.GetFmla <- function(data, spill_cols) {
+.GetFmla <- function(ncol_data, spill_cols) {
   fmlacols <- list()
-  cs <- c(1:ncol(data))
-  for (i in 1:ncol(data)) {
+  cs <- c(1:ncol_data)
+  for (i in 1:ncol_data) {
     cols <- NULL
     for (j in seq_along(spill_cols)) {
       if (i %in% spill_cols[[j]]) {
