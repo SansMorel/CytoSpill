@@ -33,7 +33,6 @@ devtools::install_github("KChen-lab/CytoSpill")
 This is a example which shows you how to compensate a CyTOF dataset, we used a sample dataset that included in our package here:
 
 ```{r}
-devtools::load_all()
 library(CytoSpill)
 getwd()
 load(file="./data/Levine32_example.Rdata")
