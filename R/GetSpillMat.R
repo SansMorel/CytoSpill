@@ -1,10 +1,9 @@
 #' @export
-GetSpillMat <- function(data = NULL, cols, n, file = NULL, threshold, flexrep, neighbor) {
-  if (is.null(data)){
-    data <- flowCore::exprs(flowCore::read.FCS(file, transformation = FALSE, truncate_max_range = FALSE))
-  }
-  cutoffs <- .DeriveCutoffs(data, cols, n, flexrep)
-  model <- .EstimateSpill(data, cutoffs, cols, upperbound = threshold, neighbor = neighbor)
+GetSpillMat <- function(data, threshold, flexrep, neighbor, seed) {
+  stopifnot("`data` must be a numeric matrix." = is.matrix(data) & is.numeric(data))
+  set.seed(seed)
+  cutoffs <- .DeriveCutoffsHelper(x = data, quantile = 0.1, flexrep = flexrep, seed = seed)
+  model <- .EstimateSpill(data, cutoffs, upperbound = threshold, neighbor = neighbor)
   estimates <- model[[1]]
   xcols <- model[[2]]
   spillmat <- diag(length(xcols))

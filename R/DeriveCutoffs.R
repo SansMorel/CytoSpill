@@ -1,18 +1,12 @@
-.DeriveCutoffs <- function(data, cols, n, flexrep){
-  data_sample <- data[sample(1:nrow(data), n, replace = FALSE), ]
-  data_work <- data_sample[,cols]
-  # cutoffs <- .DeriveCutoffsHelper(x = data_work, emt = 0.001, quantile = 0.1)
-  cutoffs <- .DeriveCutoffsHelper(x = data_work, quantile = 0.1, flexrep = flexrep)
-  return(cutoffs)
-}
 
-.DeriveCutoffsHelper <- function(x, quantile, flexrep){
+.DeriveCutoffsHelper <- function(x, quantile, flexrep, seed){
   cutoffs <- rep(NA, dim(x)[2])
 
   cl <- parallel::makeCluster(8)
   doParallel::registerDoParallel(cl)
   `%dopar%` <- foreach::`%dopar%`
   cutoffs <- foreach::foreach(i = 1:ncol(x), .combine = 'c') %dopar% {
+    set.seed(seed)
     s <- x[, i][which(x[, i] > 0)]
 
     # s <- asinh(s/5)
@@ -87,7 +81,7 @@
       cutoffs[i] <- quantile(s, probs = quantile)
       # print("using quantile")
     }
-    return(cutoffs)
+    return(cutoffs[i])
     # cutoffs[i] <- sinh(cutoffs[i])*5
     # print(cutoffs[i])
   }

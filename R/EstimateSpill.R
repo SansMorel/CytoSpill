@@ -1,7 +1,6 @@
-.EstimateSpill <- function(data, cutoffs, cols, upperbound, neighbor) {
+.EstimateSpill <- function(data, cutoffs, upperbound, neighbor) {
   results <- list()
-  data <- data[,cols]
-  spill_cols <- .SpillColsData(data, l= CATALYST::isotope_list, nneighbor=neighbor)
+  spill_cols <- .SpillColsData(colnames(data), l= CATALYST::isotope_list, nneighbor=neighbor)
   xcols <- .GetFmla(data, spill_cols = spill_cols)
 
   # #old method#
@@ -192,9 +191,8 @@
   return(fmlacols)
 }
 
-.SpillColsData <- function(data, l, nneighbor) {
+.SpillColsData <- function(chs, l, nneighbor) {
   # get ms and mets
-  chs <- colnames(data)
   # metal mass number like 167，***
   ms <- as.numeric(regmatches(chs, gregexpr("[0-9]+", chs)))
   # metal name
