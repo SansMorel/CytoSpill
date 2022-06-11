@@ -78,14 +78,14 @@
         cutoffs[i] <- root
       } else{
         cutoffs[i] <- quantile(s, probs = quantile)
-        print("using quantile")
+        # print("using quantile")
       }
     } else{
       cutoffs[i] <- quantile(s, probs = quantile)
-      print("using quantile")
+      # print("using quantile")
     }
     # cutoffs[i] <- sinh(cutoffs[i])*5
-    print(cutoffs[i])
+    # print(cutoffs[i])
   }
   return(cutoffs)
 }

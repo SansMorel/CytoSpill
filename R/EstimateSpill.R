@@ -39,11 +39,11 @@
         if (is.null(dim(A))) {A = matrix(A, nrow = 1)}
       }
       ##
-      print(dim(A))
+      # print(dim(A))
       ##
       if (nrow(A) == 0) { #where there is only 1 row remains
         results[[i]] <- NA
-        print("no datapoint available for this channel")
+        # print("no datapoint available for this channel")
       } else {
         if (nrow(A) == 1) {
           b = A[,1]
@@ -71,7 +71,7 @@
         # ##
         # model <- nnls::nnls(A=A,b=b)
         # ##
-        print("sqp modelling done")
+        # print("sqp modelling done")
         # ##
         # print(model$x)
         # results[[i]] <- model$x
@@ -89,7 +89,7 @@
       # results[[i]] <- model$x
     } else {
       results[[i]] <- NA
-      print("no spillover cols for this channel")
+      # print("no spillover cols for this channel")
     }
   }
   return(list(results, xcols))
