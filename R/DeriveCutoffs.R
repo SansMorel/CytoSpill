@@ -9,12 +9,15 @@
 .DeriveCutoffsHelper <- function(x, quantile, flexrep){
   cutoffs <- rep(NA, dim(x)[2])
 
-  for (i in 1:dim(x)[2]) {
+  cl <- parallel::makeCluster(8)
+  doParallel::registerDoParallel(cl)
+  `%dopar%` <- foreach::`%dopar%`
+  cutoffs <- foreach::foreach(i = 1:ncol(x), .combine = 'c') %dopar% {
     s <- x[, i][which(x[, i] > 0)]
 
     # s <- asinh(s/5)
 
-    model_fit <- flexmix::initFlexmix(s~1, k = c(1,2,3,4,5), nrep = flexrep)
+    model_fit <- flexmix::initFlexmix(s~1, k = c(1,2,3,4,5), nrep = flexrep, verbose = F)
     model_chosen <- flexmix::getModel(model_fit, which = "ICL")
 
     if (length(model_chosen@prior)>1){
@@ -84,9 +87,11 @@
       cutoffs[i] <- quantile(s, probs = quantile)
       # print("using quantile")
     }
+    return(cutoffs)
     # cutoffs[i] <- sinh(cutoffs[i])*5
     # print(cutoffs[i])
   }
+  parallel::stopCluster(cl)
   return(cutoffs)
 }
 #

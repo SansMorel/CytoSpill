@@ -14,5 +14,9 @@ Imports:
     CATALYST,
     nloptr,
     nnls,
-    flexmix
+    flexmix,
+    doParallel,
+    foreach,
+    parallel
 RoxygenNote: 6.1.1
+
