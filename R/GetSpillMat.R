@@ -1,8 +1,8 @@
 #' @export
-GetSpillMat <- function(data, threshold, flexrep, neighbor, seed) {
+GetSpillMat <- function(data, rows, threshold, flexrep, neighbor, seed) {
   stopifnot("`data` must be a numeric matrix." = is.matrix(data) & is.numeric(data))
   set.seed(seed)
-  cutoffs <- .DeriveCutoffsHelper(x = data, quantile = 0.1, flexrep = flexrep, seed = seed)
+  cutoffs <- .DeriveCutoffsHelper(x = data[rows,], quantile = 0.1, flexrep = flexrep, seed = seed)
   model <- .EstimateSpill(data, cutoffs, upperbound = threshold, neighbor = neighbor)
   estimates <- model[[1]]
   xcols <- model[[2]]
