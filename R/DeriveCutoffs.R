@@ -1,5 +1,5 @@
 #' @importFrom stats dnorm uniroot
-.DeriveCutoffsHelper <- function(x, quantile, flexrep, seed){
+.DeriveCutoffsHelper <- function(x, quantile, flexrep, seed, n_threads){
   cutoffs <- rep(NA, dim(x)[2])
 
 
@@ -7,7 +7,7 @@
   if (nzchar(chk) && chk == "TRUE") {
     num_workers <- 2L
   } else {
-    num_workers <- 8
+    num_workers <- n_threads
   }
   cl <- parallel::makeCluster(num_workers)
   doParallel::registerDoParallel(cl)

@@ -1,5 +1,5 @@
 #' @export
-SpillComp <- function(data, n = 1e4, cols = NULL, output = NULL, threshold = 0.1, flexrep = 10, neighbor = 1, seed = 42) {
+SpillComp <- function(data, n = 1e4, cols = NULL, output = NULL, threshold = 0.1, flexrep = 10, neighbor = 1, seed = 42, n_threads = 8) {
 
   stopifnot("n must be non-negative" = n>=0)
   if(n > 0) {
@@ -11,9 +11,9 @@ SpillComp <- function(data, n = 1e4, cols = NULL, output = NULL, threshold = 0.1
   if(is.null(cols)) cols <- 1:ncol(data)
 
 
-  spillmat_results <- GetSpillMat(data[, cols], rows, threshold = threshold, flexrep = flexrep, neighbor = neighbor, seed = seed)
   spillmat <- spillmat_results[[1]]
   cutoffs <- spillmat_results[[2]]
+  spillmat_results <- GetSpillMat(data[, cols], rows, threshold = threshold, flexrep = flexrep, neighbor = neighbor, seed = seed, n_threads = n_threads)
   set.seed(seed)
   data[,cols] <- t(apply(data[,cols], 1, function(row) nnls::nnls(t(spillmat), row)$x))
   if (!is.null(output)) {flowCore::write.FCS(flowCore::flowFrame(data), filename = output)}
