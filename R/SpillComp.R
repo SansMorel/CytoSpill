@@ -10,12 +10,16 @@ SpillComp <- function(data, n = 1e4, cols = NULL, output = NULL, threshold = 0.1
   }
   if(is.null(cols)) cols <- 1:ncol(data)
 
-
-  spillmat <- spillmat_results[[1]]
-  cutoffs <- spillmat_results[[2]]
   spillmat_results <- GetSpillMat(data[, cols], rows, threshold = threshold, flexrep = flexrep, neighbor = neighbor, seed = seed, n_threads = n_threads)
+  names(spillmat_results) <- c("spillover_matrix", "cutoffs")
+  rownames(spillmat_results$spillover_matrix) <- colnames(spillmat_results$spillover_matrix) <- colnames(data[, cols])
   set.seed(seed)
-  data[,cols] <- t(apply(data[,cols], 1, function(row) nnls::nnls(t(spillmat), row)$x))
-  if (!is.null(output)) {flowCore::write.FCS(flowCore::flowFrame(data), filename = output)}
-  return(list(flowCore::flowFrame(data), spillmat, cutoffs))
+  data[,cols] <- t(apply(data[,cols], 1, function(row) nnls::nnls(t(spillmat_results$spillover_matrix), row)$x))
+  spillmat_results$compensated_fcs <- flowCore::flowFrame(data)
+  spillmat_results <- list(compensated_fcs = spillmat_results$compensated_fcs,
+                           spillover_matrix = spillmat_results$spillover_matrix,
+                           cutoffs = spillmat_results$cutoffs)
+
+  if (!is.null(output)) {flowCore::write.FCS(spillmat_results$compensated_fcs, filename = output)}
+  return(spillmat_results)
 }

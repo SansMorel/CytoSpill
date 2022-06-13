@@ -4,7 +4,7 @@ results <- SpillComp(data = data_Levine32[1:1000,5:36], n = 0, cols = NULL, thre
 results_precomputed <- readRDS("Levine32_example_output.rds")
 
 test_that("Compensation works", {
-  expect_equal(flowCore::exprs(results[[1]]), flowCore::exprs(results_precomputed[[1]]))
-  expect_equal(results[[2]], results_precomputed[[2]])
-  expect_equal(results[[3]], results_precomputed[[3]])
+  expect_equal(flowCore::exprs(results$compensated_fcs), flowCore::exprs(results_precomputed$compensated_fcs))
+  expect_equal(results$spillover_matrix, results_precomputed$spillover_matrix)
+  expect_equal(results$cutoffs, results_precomputed$cutoffs)
 })
