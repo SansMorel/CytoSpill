@@ -11,7 +11,7 @@
 #' @references
 #'  Miao, Q, Wang, F, Dou, J, et al. Ab initio spillover compensation in mass cytometry data. Cytometry. 2021; 99: 899– 909. https://doi.org/10.1002/cyto.a.24298
 #' @export
-SpillComp <- function(data, n = 1e4, cols = NULL, output = NULL, threshold = 0.1, flexrep = 10, neighbor = 1, seed = 42, n_threads = 8) {
+SpillComp <- function(data, n = 1e4, cols = NULL, output = NULL, threshold = 0.1, flexrep = 10, neighbor = 1, quantile = 0.1, seed = 42, n_threads = 8) {
 
   stopifnot("n must be non-negative" = n>=0)
   if(n > 0) {
@@ -22,7 +22,7 @@ SpillComp <- function(data, n = 1e4, cols = NULL, output = NULL, threshold = 0.1
   }
   if(is.null(cols)) cols <- 1:ncol(data)
 
-  spillmat_results <- GetSpillMat(data[, cols], rows, threshold = threshold, flexrep = flexrep, neighbor = neighbor, seed = seed, n_threads = n_threads)
+  spillmat_results <- GetSpillMat(data[, cols], rows, threshold = threshold, flexrep = flexrep, neighbor = neighbor, quantile = quantile, seed = seed, n_threads = n_threads)
   names(spillmat_results) <- c("spillover_matrix", "cutoffs")
   rownames(spillmat_results$spillover_matrix) <- colnames(spillmat_results$spillover_matrix) <- colnames(data[, cols])
   set.seed(seed)
