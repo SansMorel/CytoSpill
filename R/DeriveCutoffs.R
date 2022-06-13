@@ -12,7 +12,8 @@
   cl <- parallel::makeCluster(num_workers)
   doParallel::registerDoParallel(cl)
   `%dopar%` <- foreach::`%dopar%`
-  cutoffs <- foreach::foreach(i = 1:ncol(x), .combine = 'c') %dopar% {
+  i <- 1:ncol(x)
+  cutoffs <- foreach::foreach(i = i, .combine = 'c') %dopar% {
     set.seed(seed)
     s <- x[, i][which(x[, i] > 0)]
 

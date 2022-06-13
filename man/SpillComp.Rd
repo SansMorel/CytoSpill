@@ -12,6 +12,7 @@ SpillComp(
   threshold = 0.1,
   flexrep = 10,
   neighbor = 1,
+  quantile = 0.1,
   seed = 42,
   n_threads = 8
 )
@@ -25,15 +26,17 @@ SpillComp(
 
 \item{output}{Output FCS filename. Set output = NULL  to not write FCS file.}
 
-\item{threshold}{Spillover max boundary. See https://onlinelibrary.wiley.com/doi/10.1002/cyto.a.24298.}
+\item{threshold}{Spillover max boundary.}
 
 \item{flexrep}{Passed to flexmix. Number of times flexmix is run. See flexmix nrep.}
 
 \item{neighbor}{Abundance spillover channels. Can be 1 or 2.}
 
+\item{quantile}{Quantile used for cutoff calculation. Passed to GetSpillMat.}
+
 \item{seed}{seed for reproducibility.}
 
-\item{n_threads}{Number of threads used for calculation of cutoffs.}
+\item{n_threads}{Number of threads used for calculation of cutoffs. Passed to GetSpillMat.}
 }
 \description{
 Estimate spillover matrix and correct spillover

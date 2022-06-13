@@ -1,5 +1,5 @@
 
-load(file=file.path(system.file("data", package="CytoSpill"), "Levine32_example.Rdata"))
+data(data_Levine32)
 results <- SpillComp(data = data_Levine32[1:1000,5:36], n = 0, cols = NULL, threshold = 0.1, flexrep = 5, neighbor = 1)
 results_precomputed <- readRDS("Levine32_example_output.rds")
 

@@ -37,7 +37,7 @@ This is a example which shows you how to compensate a CyTOF dataset, we used a s
 
 ```{r}
 library(CytoSpill)
-load(file="./data/Levine32_example.Rdata")
+data(data_Levine32)
 str(data_Levine32)
 ```
 
